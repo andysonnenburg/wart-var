@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DefaultSignatures #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 module Control.Monad.New
@@ -16,14 +17,20 @@ import Prelude (IO, Monad (..), (.))
 class (Applicative m, Monad m) => MonadNew var m where
   new :: a -> m (var a)
 
+#ifndef HLINT
   default new :: (MonadTrans t, MonadNew var m) => a -> t m (var a)
+  {-# INLINE new #-}
   new = lift . new
+#endif
 
 instance MonadNew IORef IO where
+  {-# INLINE new #-}
   new = newIORef
 
 instance MonadNew (STRef s) (ST s) where
+  {-# INLINE new #-}
   new = newSTRef
 
 instance MonadNew (STRef s) (Lazy.ST s) where
+  {-# INLINE new #-}
   new = Lazy.newSTRef

@@ -34,12 +34,14 @@ library
   ghc-options: -Wall
   build-depends:
     base >= 4.4 && < 5,
+    lens,
     transformers
   exposed-modules:
     Control.Monad.New
     Control.Monad.Read
-    Control.Monad.Var
     Control.Monad.Write
+    Data.Var.Boxed
+    Data.Var.Unboxed
 
 test-suite hlint
   type: exitcode-stdio-1.0
